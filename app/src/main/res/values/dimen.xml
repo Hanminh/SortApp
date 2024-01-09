@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <dimen name="textSize">30dp</dimen>
+    <dimen name="move_right">50dp</dimen>
+    <dimen name="move_up">-50dp</dimen>
+</resources>
