@@ -18,5 +18,5 @@ Sử dụng Android Studio và Project để chạy ứng dụng:
 
 link dowload: https://developer.android.com/studio?gclid=CjwKCAiA-vOsBhAAEiwAIWR0TQkx-xUgkCOfWDiMYXzvmVvh8axeroTk6WF3xiaqPZI3Wm-IzxMRnRoCwUUQAvD_BwE&gclsrc=aw.ds
 
-thực hiện cài đặt giả lập, tải và mở project trong Android Studio và chạy ứng dụng.
+thực hiện cài đặt thiết bị giả lập trên Adroid Studio, tải và mở project trong Android Studio và chạy ứng dụng.
 
