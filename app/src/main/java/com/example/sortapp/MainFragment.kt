@@ -93,6 +93,7 @@ class MainFragment : Fragment() {
         val quickSortButton = binding.quickSortButton
         val mergeSortButton = binding.mergeSortButton
 
+        // filter để thực hiện lọc input text - chỉ cho phép nhận vào số hoặc dấu phẩy, và không có 2 dấu phẩy liên tiếp
         val inputFilter = InputFilter { source, start, end, dest, dstart, dend ->
             val inputText = dest.toString() + source.toString()
             if (!isValidInput(inputText)) {
@@ -100,9 +101,9 @@ class MainFragment : Fragment() {
             }
             null
         }
-
         inputEditText.filters = arrayOf(inputFilter)
 
+        // thực hiện lắng nghe sự thay đổi của input text để tạo ra các phần tử ứng với input text
         binding.inputEditText.addTextChangedListener(object : TextWatcher {
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -130,6 +131,8 @@ class MainFragment : Fragment() {
                 }
             }
         })
+
+        //xử lý sự kiện khi nhấn nút Random
         randomButton.setOnClickListener {
             GlobalScope.launch(Dispatchers.Main) {
                 resetState()
@@ -137,6 +140,7 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi nhấn nút Bubble
         bubbleSortButton.setOnClickListener {
             if (displayLayout.getChildAt(0) != null && !bubbleRunning ) {
                 if (checkRunning == 1 || checkRunning == 0) {
@@ -147,6 +151,7 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi nhấn nút selection
         selectionSortButton.setOnClickListener {
             if (displayLayout.getChildAt(0) != null && !selectionRunning) {
                 if (checkRunning == 2 || checkRunning == 0) {
@@ -157,6 +162,7 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi nhấn nút insertion
         insertionSortButton.setOnClickListener {
             if (displayLayout.getChildAt(0) != null && !insertionRunning) {
                 if (checkRunning == 3 || checkRunning == 0) {
@@ -167,6 +173,7 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi nhấn nút quick
         quickSortButton.setOnClickListener {
             if (!quickRunning && displayLayout.getChildAt(0) != null) {
                 quickRunning = true
@@ -182,10 +189,12 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi nhấn nút pause
         pauseButton.setOnClickListener {
             handlePauseButton()
         }
 
+        //Xử lý sự kiện khi nhấn nút merge
         mergeSortButton.setOnClickListener {
             if (checkRunning == 0 || checkRunning == 5) {
                 checkRunning = 5
@@ -208,6 +217,7 @@ class MainFragment : Fragment() {
             }
         }
 
+        //Xử lý sự kiện khi kéo thanh seekBar để thay đổi tốc độ sắp xếp
         seekBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 when (progress) {
@@ -264,6 +274,8 @@ class MainFragment : Fragment() {
 
     }
 
+
+    //Cài đặt orientation cho screen là portrait
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -273,10 +285,12 @@ class MainFragment : Fragment() {
         activity?.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
     }
 
+    //Hàm kiểm tra input text, chỉ cho phép nhận dấu phẩy hoặc số nguyên
     private fun isValidInput(text: String): Boolean {
         return text.matches("[0-9,]*".toRegex())
     }
 
+    //Hàm đổi đơn vị dp sang Pixel
     private fun dpToPx(dp: Int, context: Context): Int {
         val px = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -286,6 +300,7 @@ class MainFragment : Fragment() {
         return px.toInt()
     }
 
+    //Tạo 1 textView hiển thị giá trị số nguyên x
     private fun setTextView(textView: TextView, x: Int) {
         textView.setBackgroundResource(R.drawable.textview_border)
         textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30f)
@@ -303,6 +318,7 @@ class MainFragment : Fragment() {
         displayLayout.addView(textView)
     }
 
+    //Hàm xử lý sự kiện nút Random, thực hiện tạo ra trên màn hình 7 phần tử
     private fun handleRandomButton(x: Int) {
         displayLayout.removeAllViews()
         resetState()
@@ -319,6 +335,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    //Hàm xử lý sự kiện nút pause, dừng thuật toán đang chạy hiện tại và chỉ cho phép thuật toán đó hoạt động tiếp
     private fun handlePauseButton() {
         if (checkRunning == 0) return
         if (!checkPause) {
@@ -358,6 +375,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    //Tạo animation thay đổi vị trí giữa các phần tử
     private fun animationSwapText(view1: TextView, view2: TextView) {
         val xOfView1 = view1.x
         val yOfView1 = view1.y
@@ -409,7 +427,6 @@ class MainFragment : Fragment() {
         set1.start()
         set2.start()
     }
-
     private fun animationSwapTextNoColor(view1: TextView, view2: TextView) {
         val xOfView1 = view1.x
         val yOfView1 = view1.y
@@ -468,7 +485,6 @@ class MainFragment : Fragment() {
         set1.start()
         set2.start()
     }
-
     private fun animationSwapTextTwoColor(view1: TextView, view2: TextView) {
         val xOfView1 = view1.x
         val yOfView1 = view1.y
@@ -521,6 +537,7 @@ class MainFragment : Fragment() {
         set2.start()
     }
 
+    //Thực hiện reset trạng thái của chương trình
     private fun resetState() {
         checkRunning = 0
         bubblePosition = 0
@@ -543,6 +560,7 @@ class MainFragment : Fragment() {
         insertionSortJob.cancel()
     }
 
+    //Thực hiện tạm dừng trạng thái của chương trình
     private fun pauseState() {
         bubbleRunning = false
         insertionRunning = false
@@ -554,23 +572,50 @@ class MainFragment : Fragment() {
         quickSortJob.cancel()
     }
 
+    //Highligh và reset Background các phần tử
     private fun highlightTextViewsGreen(textView1: TextView) {
         textView1.setBackgroundResource(R.drawable.text_border_highlighted)
     }
-
     private fun highlightTextViewsPink(textView1: TextView) {
         textView1.setBackgroundResource(R.drawable.text_border_highlight_pink)
     }
-
     private fun highlightTextViewsYellow(textView1: TextView) {
         textView1.setBackgroundResource(R.drawable.text_border_highlight_yellow)
     }
-
     private fun resetTextViewsBackground(textView1: TextView) {
         textView1.setBackgroundResource(R.drawable.textview_border)
 
     }
+    private fun highlightAllViewGreen(id1: Int, id2: Int) {
+        if (viewModel.textViewIndex.value == null) return
+        for (i in id1..id2) {
+            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
+            highlightTextViewsGreen(view)
+        }
+    }
+    private fun highlightAllViewPink(id1: Int, id2: Int) {
+        if (viewModel.textViewIndex.value == null) return
+        for (i in id1..id2) {
+            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
+            highlightTextViewsPink(view)
+        }
+    }
+    private fun highlightAllViewYellow(id1: Int, id2: Int) {
+        if (viewModel.textViewIndex.value == null) return
+        for (i in id1..id2) {
+            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
+            highlightTextViewsYellow(view)
+        }
+    }
+    private fun resetAllView(id1: Int, id2: Int) {
+        if (viewModel.textViewIndex.value == null) return
+        for (i in id1..id2) {
+            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
+            resetTextViewsBackground(view)
+        }
+    }
 
+    //Thực hiện hiển thị phần tử trên màn hình dựa theo input text
     private fun displayNumbers(input: String) {
         val text = binding.inputEditText.text.toString()
         if (text.isEmpty()) {
@@ -594,6 +639,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    //Thuật toán bubble sort, thực hiện bắt đầu từ vị trí x
     private suspend fun bubbleSortAlgorithm(x: Int) {
         binding.bubbleSortButton.setBackgroundResource(R.color.Green)
         if (bubbleRunning) return
@@ -660,6 +706,7 @@ class MainFragment : Fragment() {
         highlightAllViewGreen(0, viewModel.textViewIndex.value!!.size - 1)
     }
 
+    //Thuật toán selection sort, thực hiện tìm phần tử nhỏ nhất chèn vào vị trí x, và đang duyệt đến phần tử thứ y
     private suspend fun selectionSortAlgorithm(x: Int, y: Int) {
         binding.selectionSortButton.setBackgroundResource(R.color.Green)
         if (selectionRunning) return
@@ -726,6 +773,7 @@ class MainFragment : Fragment() {
         highlightAllViewGreen(0, viewModel.textViewIndex.value!!.size - 1)
     }
 
+    //Thuật toán insertion sort, thực hiện bắt đầu từ vị trí x
     private suspend fun insertionSortAlgorithm(x: Int) {
         binding.insertionSortButton.setBackgroundResource(R.color.Green)
         if (insertionRunning) return
@@ -770,6 +818,7 @@ class MainFragment : Fragment() {
         highlightAllViewGreen(0, viewModel.textViewIndex.value!!.size - 1)
     }
 
+    //Thuật toán quicksort
     private suspend fun index(be: Int, en: Int, indexPivot: Int): Int {
         val pivot: Int = viewModel.arrayData.value!![indexPivot]
 
@@ -835,7 +884,6 @@ class MainFragment : Fragment() {
         delay(timeWait2)
         return storeIndex
     }
-
     private suspend fun quickSortAlgorithm(be: Int, en: Int) {
         binding.quickSortButton.setBackgroundResource(R.color.Green)
         if (be == 0 && en == viewModel.textViewIndex.value!!.size - 1) {
@@ -858,6 +906,7 @@ class MainFragment : Fragment() {
         }
     }
 
+    //Hàm đổi chỗ 2 phần tử, bao gồm cả thứ tự và vị trí trên màn hình
     private fun swapView(view1: TextView, view2: TextView, id1: Int, id2: Int) {
         animationSwapText(view1, view2)
 
@@ -871,37 +920,7 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun highlightAllViewGreen(id1: Int, id2: Int) {
-        if (viewModel.textViewIndex.value == null) return
-        for (i in id1..id2) {
-            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
-            highlightTextViewsGreen(view)
-        }
-    }
 
-    private fun highlightAllViewPink(id1: Int, id2: Int) {
-        if (viewModel.textViewIndex.value == null) return
-        for (i in id1..id2) {
-            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
-            highlightTextViewsPink(view)
-        }
-    }
-
-    private fun highlightAllViewYellow(id1: Int, id2: Int) {
-        if (viewModel.textViewIndex.value == null) return
-        for (i in id1..id2) {
-            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
-            highlightTextViewsYellow(view)
-        }
-    }
-
-    private fun resetAllView(id1: Int, id2: Int) {
-        if (viewModel.textViewIndex.value == null) return
-        for (i in id1..id2) {
-            val view = displayLayout.getChildAt(viewModel.textViewIndex.value!![i]) as TextView
-            resetTextViewsBackground(view)
-        }
-    }
 
 }
 

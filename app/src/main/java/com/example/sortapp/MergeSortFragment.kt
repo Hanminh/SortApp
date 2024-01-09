@@ -91,6 +91,8 @@ class MergeSortFragment : Fragment() {
 
     }
 
+    //Hàm xử lý sự kiện nút Start, thuật toán Merge Sort được thực hiện theo thứ tự các hàm bên dưới
+    //Thực hiện theo thứ tự thủ công
     private suspend fun handleButton() {
         binding.button.visibility = Button.GONE
         divideArray1(11,15)
@@ -126,6 +128,7 @@ class MergeSortFragment : Fragment() {
 
     }
 
+    //Đổi chỗ 2 phần tử trong cùng 1 hàng
     private fun swapTextView(id1: Int, id2: Int) {
         val view1 = textViewList[index[id1]]
         val view2 = textViewList[index[id2]]
@@ -136,6 +139,7 @@ class MergeSortFragment : Fragment() {
         index[id2] = tmp
     }
 
+    //Đổi chỗ 2 phần tử khác hàng _ Dùng trong bước Merge 2 dãy con đã được sắp xếp
     private fun swapTextViewDiffRow(id1: Int, id2: Int) {
         val view1 = textViewList[index[id1]]
         val x1 = view1.x
@@ -162,7 +166,6 @@ class MergeSortFragment : Fragment() {
         })
         set.start()
     }
-
     //Duration = 500
     private fun animationSwapText(view1: TextView, view2: TextView) {
         val x1 = view1.x
@@ -275,6 +278,7 @@ class MergeSortFragment : Fragment() {
         }
     }
 
+    //Thực hiện sắp xếp 2 phần tử liên tiếp nhau
     private suspend fun mergeSort30(id1: Int, id2: Int) {
         val view1 = textViewList[index[id1]]
         val view2 = textViewList[index[id2]]
@@ -290,6 +294,7 @@ class MergeSortFragment : Fragment() {
         }
     }
 
+    //Thực hiện trong bước merge 1 dãy con 1 phần tử và 1 dãy con 2 phần tử
     private suspend fun mergeSort31(id1: Int, id2: Int, id3: Int) {
         highlightTextView(id1)
         delay(500)
@@ -317,6 +322,7 @@ class MergeSortFragment : Fragment() {
         }
     }
 
+    //Thực hiện trong bước merge 2 dãy con bất kì, mỗi dãy con gồm 2 phần tử trở lên
     private suspend fun mergeSort32(v1: Int, v2: Int, v3: Int, be: Int) {
         var id1 = v1
         var id2 = v2
@@ -419,6 +425,7 @@ class MergeSortFragment : Fragment() {
         return textViewList
     }
 
+    //Hiển thị giao diện thuật toán sắp xếp
     private fun createUIView() {
         for (i in 1..10) {
             textViewList[i].text = viewModel.arrayData.value!![i - 1].toString()
